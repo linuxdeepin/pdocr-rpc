@@ -8,16 +8,12 @@ import json
 from os import popen, environ
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
-import logging
 from config import IS_X11
-from config import SCREEN_CACHE
-from config import IP
+# from config import IP
+IP = "10.8.13.78"
 from config import PORT
 environ["DISPLAY"] = ":0"
 import pyscreenshot
-
-logger = logging.getLogger("ocr")
-
 
 
 
@@ -27,6 +23,7 @@ def _pdocr(lang):
     :return: OCR 识别结果
     """
     # 截取当前屏幕
+    from config import SCREEN_CACHE
     if IS_X11:
         pyscreenshot.grab().save(SCREEN_CACHE)
     else:
@@ -35,14 +32,14 @@ def _pdocr(lang):
             .read()
             .strip("\n")
         )
-    server = ServerProxy(f"https://{IP}:{PORT}", allow_none=True)
+    server = ServerProxy(f"http://{IP}:{PORT}", allow_none=True)
     put_handle = open(SCREEN_CACHE, "rb")
     try:
         server.image_put(Binary(put_handle.read()))
         put_handle.close()
         return server.paddle_ocr("screen.png", lang)
     except OSError:
-        raise EnvironmentError(f"RPC服务器链接失败. https://{IP}:{PORT}")
+        raise EnvironmentError(f"RPC服务器链接失败. http://{IP}:{PORT}")
 
 
 def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
@@ -82,10 +79,10 @@ def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
                     n += 1
         if len(more_map) == 1:
             center_x, center_y = more_map.get(target_strings[0])
-            logger.debug(f"OCR识别到字符“{target_strings[0]}”—>{center_x, center_y}")
+            print(f"OCR识别到字符“{target_strings[0]}”—>{center_x, center_y}")
             return center_x, center_y
         if len(more_map) > 1:
-            logger.debug(
+            print(
                 f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
             )
             return more_map
@@ -107,7 +104,7 @@ def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
                 more_map[strings] = (center_x, center_y)
 
         if more_map:
-            logger.debug(
+            print(
                 f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
             )
             return more_map
@@ -140,10 +137,13 @@ def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
                     n += 1
 
         if more_map:
-            logger.debug(
+            print(
                 f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
             )
             return more_map
 
-    logger.debug(f"未识别到字符{f'“{target_strings}”' or ''}")
+    print(f"未识别到字符{f'“{target_strings}”' or ''}")
     return False
+
+if __name__ == '__main__':
+    ocr()
