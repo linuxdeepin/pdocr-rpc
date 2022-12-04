@@ -9,8 +9,8 @@ from os import popen, environ
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
 from config import IS_X11
-# from config import IP
-IP = "10.8.13.78"
+from config import IP
+# IP = "10.8.13.78"
 from config import PORT
 environ["DISPLAY"] = ":0"
 import pyscreenshot
