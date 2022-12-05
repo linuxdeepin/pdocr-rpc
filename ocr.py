@@ -13,7 +13,10 @@ from config import IS_X11
 from config import PORT
 
 environ["DISPLAY"] = ":0"
-import pyscreenshot
+# Linux
+import pyscreenshot as ImageGrab
+# Windows or macOS
+# from PIL import ImageGrab
 
 SERVER_IP = "10.8.13.78"
 
@@ -27,7 +30,7 @@ def _pdocr(lang, picture_abspath=None):
         from config import SCREEN_CACHE
         picture_abspath = SCREEN_CACHE
         if IS_X11:
-            pyscreenshot.grab().save(os.path.expanduser(picture_abspath))
+            ImageGrab.grab().save(os.path.expanduser(picture_abspath))
         else:
             picture_abspath = (
                 popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")

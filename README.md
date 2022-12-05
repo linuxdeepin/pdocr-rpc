@@ -2,19 +2,11 @@
 
 基于 PaddleOCR 部署的 RPC 服务。
 
-提供了一个高度封装的接口函数 `ocr`，通过不同的参数组合返回不同的值。
+提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
 ## 1、客户端
 
-依赖：
-
-```shell
-sudo pip3 install pyscreenshot
-```
-
-用于截图的工具。
-
-【使用方法】
+### 1.1、使用方法
 
 ```python
 # ocr.py
@@ -34,9 +26,68 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
     """
 ```
 
+### 1.2、使用场景
+
+#### 1.1.1、指定某张图片识别
+
+```python
+ocr("~/Desktop/test.png")
+```
+
+返回识别图片 `test.png` 的内容。 
+
+#### 1.1.2、识别当前屏幕
+
+```python
+ocr()
+```
+
+自动识别当前整个屏幕的所有内容。
+
+#### 1.1.3、指定查找某个字符串的坐标
+
+```python
+ocr("天天向上")
+```
+
+返回当前屏幕中，“天天向上”的坐标，如果存在多个，则返回一个字典。
+
+通过不同的参数可以改变返回值的类型；
+
+### 1.3、安装依赖
+
+客户端仅需要安装截图工具；
+
+- `Windows` 上使用：
+
+```shell
+pip install pillow
+```
+
+- `Linux` 上使用：
+
+[PIL](https://en.wikipedia.org/wiki/Python_Imaging_Library) ImageGrab 模块在部分的 `Linux` 上可能存在问题，报错：`ImportError: ImageGrab is macOS and Windows only` ；
+
+`Linux` 上推荐安装 `pyscreenshot`；
+
+```shell
+sudo pip3 install pyscreenshot
+```
+
+然后修改导入代码：
+
+```python
+# Linux
+import pyscreenshot as ImageGrab
+# Windows or macOS
+# from PIL import ImageGrab
+```
+
 ## 2、服务端
 
-推荐使用 `pipenv` 进行环境搭建；
+使用 `Linux` 操作系统进行部署，`debian`、`ubuntu`、`centos`、`UOS`、`deepin` 等常见的发行版都是可以的。
+
+推荐 `pipenv` 进行环境搭建；
 
 安装 `pipenv` ：
 
@@ -127,3 +178,8 @@ sudo systemctl status ocr.service
 
 你可以再重启下电脑，看看服务是不是正常启动了，没报错就 OK 了。
 
+### 2.3、缓存
+
+在 `ocr_env/pic` 目录下保存了识别的一些缓存图片文件，您可能需要定期进行删除；
+
+当然，你可以使用定时任务对缓存文件进行清理，例如 `crontab`、`Jenkins` 任务等。
