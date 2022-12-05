@@ -46,9 +46,13 @@ def _pdocr(lang, picture_abspath=None):
 
 def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=False, return_first=False, lang="ch"):
     """
-     从 OCR 识别结果中判断是否存在目标字符，并返回目标字符串的中心坐标。
-    :param target_strings: 目标字符,识别一个字符串或多个字符串;如果不传参，返回当前屏幕中识别到的所有字符串。
+     通过 OCR 进行识别。
+    :param target_strings:
+        目标字符,识别一个字符串或多个字符串,并返回其在图片中的坐标;
+        如果不传参，返回图片中识别到的所有字符串。
+    :param picture_abspath: 要识别的图片路径。
     :param similarity: 匹配度。
+    :param return_default: 返回识别的原生数据。
     :param return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
     :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
     :return: 返回的坐标是目标字符串所在行的中心坐标。
