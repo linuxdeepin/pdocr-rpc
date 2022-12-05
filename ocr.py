@@ -5,53 +5,57 @@
 @Date: 2022/5/25 0:03
 """
 import json
+import os
 from os import popen, environ
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
 from config import IS_X11
-from config import IP
-# IP = "10.8.13.78"
 from config import PORT
+
 environ["DISPLAY"] = ":0"
 import pyscreenshot
 
+SERVER_IP = "10.8.13.78"
 
 
-def _pdocr(lang):
+def _pdocr(lang, picture_abspath=None):
     """
      通过 RPC 协议进行 OCR 识别。
     :return: OCR 识别结果
     """
-    # 截取当前屏幕
-    from config import SCREEN_CACHE
-    if IS_X11:
-        pyscreenshot.grab().save(SCREEN_CACHE)
-    else:
-        SCREEN_CACHE = (
-            popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
-            .read()
-            .strip("\n")
-        )
-    server = ServerProxy(f"http://{IP}:{PORT}", allow_none=True)
-    put_handle = open(SCREEN_CACHE, "rb")
+    if picture_abspath is None:
+        from config import SCREEN_CACHE
+        picture_abspath = SCREEN_CACHE
+        if IS_X11:
+            pyscreenshot.grab().save(os.path.expanduser(picture_abspath))
+        else:
+            picture_abspath = (
+                popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
+                .read()
+                .strip("\n")
+            )
+    server = ServerProxy(f"http://{SERVER_IP}:{PORT}", allow_none=True)
+    put_handle = open(os.path.expanduser(picture_abspath), "rb")
     try:
-        server.image_put(Binary(put_handle.read()))
+        pic_dir = server.image_put(Binary(put_handle.read()))
         put_handle.close()
-        return server.paddle_ocr("screen.png", lang)
+        return server.paddle_ocr(pic_dir, lang)
     except OSError:
-        raise EnvironmentError(f"RPC服务器链接失败. http://{IP}:{PORT}")
+        raise EnvironmentError(f"RPC服务器链接失败. http://{SERVER_IP}:{PORT}")
 
 
-def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
+def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=False, return_first=False, lang="ch"):
     """
-     从 OCR 识别结果中判断是否存在目标字符。
+     从 OCR 识别结果中判断是否存在目标字符，并返回目标字符串的中心坐标。
     :param target_strings: 目标字符,识别一个字符串或多个字符串;如果不传参，返回当前屏幕中识别到的所有字符串。
     :param similarity: 匹配度。
     :param return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
     :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
     :return: 返回的坐标是目标字符串所在行的中心坐标。
     """
-    results = _pdocr(lang=lang)
+    results = _pdocr(picture_abspath=picture_abspath, lang=lang)
+    if return_default:
+        return results
     more_map = {}
     if len(target_strings) == 1:
         n = 1
@@ -145,5 +149,6 @@ def ocr(*target_strings, similarity=0.6, return_first=False, lang="ch"):
     print(f"未识别到字符{f'“{target_strings}”' or ''}")
     return False
 
+
 if __name__ == '__main__':
-    ocr()
+    print(ocr())

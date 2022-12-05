@@ -13,5 +13,5 @@ DISPLAY_SERVER = popen("cat ~/.xsession-errors | grep XDG_SESSION_TYPE | head -n
 IS_X11 = (DISPLAY_SERVER == DisplayServer.x11)
 IS_WAYLAND = (DISPLAY_SERVER == DisplayServer.wayland)
 IP = popen("hostname -I").read().split(" ")[0]
-PORT = 8888
+PORT = 8890
 SCREEN_CACHE = "/tmp/screen.png"
