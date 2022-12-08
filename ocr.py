@@ -53,7 +53,7 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
     :param target_strings:
         目标字符,识别一个字符串或多个字符串,并返回其在图片中的坐标;
         如果不传参，返回图片中识别到的所有字符串。
-    :param picture_abspath: 要识别的图片路径。
+    :param picture_abspath: 要识别的图片路径，如果不传默认截取全屏识别。
     :param similarity: 匹配度。
     :param return_default: 返回识别的原生数据。
     :param return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
