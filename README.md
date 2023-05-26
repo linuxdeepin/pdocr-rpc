@@ -16,15 +16,13 @@ pip install pdocr-rpc
 
 客户端仅需要安装**截图工具**；
 
-- `Windows` 上使用：
+- `Windows` 上安装截图工具：
 
 ```shell
 pip3 install pillow
 ```
 
-- `Linux` 上使用：
-
-[PIL](https://en.wikipedia.org/wiki/Python_Imaging_Library) 的 `ImageGrab` 模块在部分的 `Linux` 上可能存在问题，报错：`ImportError: ImageGrab is macOS and Windows only` ；
+- `Linux` 上安装截图工具：
 
 `Linux` 上推荐安装 `pyscreenshot`；
 
@@ -34,9 +32,9 @@ pip3 install pyscreenshot
 
 ### 服务端依赖
 
-安装 PaddleOCR` 环境
+安装 `PaddleOCR` 环境
 
-```
+```shell
 pip3 install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 pip3 install "paddleocr>=2.0.1" -i https://mirror.baidu.com/pypi/simple
 ```
