@@ -1,0 +1,4 @@
+-i https://mirror.baidu.com/pypi/simple
+
+paddlepaddle
+paddleocr>=2.0.1

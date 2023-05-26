@@ -9,42 +9,42 @@ import os
 from os import popen, environ
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
-from config import IS_X11
-from config import PORT
+
+from pdocr_rpc.setting import setting
 
 environ["DISPLAY"] = ":0"
-# Linux
-import pyscreenshot as ImageGrab
-# Windows or macOS
-# from PIL import ImageGrab
 
-SERVER_IP = "10.8.13.78"
+if setting.IS_LINUX:
+    import pyscreenshot as ImageGrab
+elif setting.IS_WINDOWS:
+    from PIL import ImageGrab
 
 
-def _pdocr(lang, picture_abspath=None):
+def _pdocr_client(lang, picture_abspath=None):
     """
      通过 RPC 协议进行 OCR 识别。
-    :return: OCR 识别结果
+    :return: 返回 PaddleOCR 的原始数据
     """
     if picture_abspath is None:
-        from config import SCREEN_CACHE
-        picture_abspath = SCREEN_CACHE
-        if IS_X11:
+        picture_abspath = setting.SCREEN_CACHE
+        if setting.IS_X11:
             ImageGrab.grab().save(os.path.expanduser(picture_abspath))
         else:
             picture_abspath = (
                 popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
-                .read()
-                .strip("\n")
+                    .read()
+                    .strip("\n")
             )
-    server = ServerProxy(f"http://{SERVER_IP}:{PORT}", allow_none=True)
+    server = ServerProxy(f"http://{setting.IP}:{setting.PORT}", allow_none=True)
     put_handle = open(os.path.expanduser(picture_abspath), "rb")
     try:
+        # 将图片上传到服务端
         pic_dir = server.image_put(Binary(put_handle.read()))
         put_handle.close()
+        # 返回识别结果
         return server.paddle_ocr(pic_dir, lang)
     except OSError:
-        raise EnvironmentError(f"RPC服务器链接失败. http://{SERVER_IP}:{PORT}")
+        raise EnvironmentError(f"RPC服务器链接失败. http://{setting.SERVER_IP}:{setting.PORT}")
 
 
 def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=False, return_first=False, lang="ch"):
@@ -60,7 +60,7 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
     :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
     :return: 返回的坐标是目标字符串所在行的中心坐标。
     """
-    results = _pdocr(picture_abspath=picture_abspath, lang=lang)
+    results = _pdocr_client(picture_abspath=picture_abspath, lang=lang)
     if return_default:
         return results
     more_map = {}
