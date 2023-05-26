@@ -4,12 +4,13 @@
 :Author: Mikigo
 :Date: 2022/5/25 0:02
 """
-from time import time
-from os.path import join, dirname, abspath, exists
 from os import makedirs
+from os.path import join, dirname, abspath, exists
 from socketserver import ThreadingMixIn
+from time import time
 from typing import TYPE_CHECKING
 from xmlrpc.server import SimpleXMLRPCServer
+
 from pdocr_rpc.setting import setting
 
 if not TYPE_CHECKING:
@@ -52,5 +53,6 @@ if __name__ == "__main__":
     server = ThreadXMLRPCServer(("0.0.0.0", setting.PORT), allow_none=True)
     server.register_function(image_put, "image_put")
     server.register_function(paddle_ocr, "paddle_ocr")
-    print("监听客户端请求。。")
+    print("Listen to client requests ...")
+    print(f"Client request: IP:{setting.PORT}")
     server.serve_forever()

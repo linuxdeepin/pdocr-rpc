@@ -1,10 +1,10 @@
 # pdocr-rpc
 
-基于 PaddleOCR 封装的 RPC 服务，包含客户端和服务端。
+基于 `PaddleOCR` 封装的 `RPC` 服务，包含客户端和服务端。
 
 客户端提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
-## 安装
+## 1、安装
 
 ```shell
 pip install pdocr-rpc
@@ -12,54 +12,73 @@ pip install pdocr-rpc
 
 另外还需要手动安装以下依赖：
 
-### 客户端依赖
+### 1.1、客户端依赖
 
 客户端仅需要安装**截图工具**；
 
 - `Windows` 上安装截图工具：
 
-```shell
-pip3 install pillow
-```
+  ```shell
+  pip3 install pillow
+  ```
 
 - `Linux` 上安装截图工具：
 
-`Linux` 上推荐安装 `pyscreenshot`；
-
-```shell
+  ```shell
 pip3 install pyscreenshot
-```
+  ```
 
-### 服务端依赖
 
-安装 `PaddleOCR` 环境
+### 1.2、服务端依赖
+
+安装 `PaddleOCR` 环境：
 
 ```shell
 pip3 install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 pip3 install "paddleocr>=2.0.1" -i https://mirror.baidu.com/pypi/simple
 ```
 
+## 2、使用方法
 
+### 2.1、服务端
 
-## 1、使用方法
+随意新建一个`py`文件，比如：`ocr_server.py`；
 
-### 1.1、导入
+写入以下内容：
 
 ```python
-from pdocr_rpc import ocr
+# ocr_server.py
+from pdocr_rpc.ocr_server import ocr_server
+
+if __name__ == '__main__':
+    ocr_server()
 ```
 
-### 1.2、使用场景
-
-#### 1.1.1、识别当前屏幕的所有文字内容
+如果你想修改端口：
 
 ```python
+from pdocr_rpc.ocr_server import ocr_server
+from pdocr_rpc.setting import setting
+
+setting.PORT = 8888
+
+if __name__ == '__main__':
+    ocr_server()
+```
+
+### 2.2、客户端
+
+#### 2.1、识别当前屏幕的所有文字内容
+
+```python
+from pdocr_rpc.ocr import ocr
+
 ocr()
 ```
 
 自动识别当前整个屏幕的所有内容。
 
-#### 1.1.2、指定某张图片识别的所有文字内容
+#### 2.2、指定某张图片识别的所有文字内容
 
 ```python
 ocr(picture_abspath="~/Desktop/test.png")
@@ -67,7 +86,7 @@ ocr(picture_abspath="~/Desktop/test.png")
 
 返回识别图片 `test.png` 的内容。 
 
-#### 1.1.3、在全屏指定查找某个字符串的坐标
+#### 2.3、在全屏指定查找某个字符串的坐标
 
 ```python
 ocr("天天向上")
@@ -75,83 +94,56 @@ ocr("天天向上")
 
 返回当前屏幕中，“天天向上”的坐标，如果存在多个，则返回一个字典。
 
-#### 1.1.4、指定某张图片查找某个字符串的坐标
+#### 2.4、指定某张图片查找某个字符串的坐标
 
 ```python
 ocr("天天向上"，picture_abspath="~/Desktop/test.png")
 ```
 
-### 1.3、其他参数
+#### 2.5、其他参数
 
-```shell
-similarity: 匹配度。
-return_default: 返回识别的原生数据。
-return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
-lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
-```
+- 识别语言
 
-### 2.1、启动服务
+  lang： `ch`, `en`, `fr`, `german`, `korean`, `japan`
 
-将 `ocr_server.py` 文件拷贝到 `ocr_env` 目录，后台执行它就好了：
+  默认为ch，中文，如果要修改识别语言；
 
-```
-cd ocr_env
-nohup pipenv run python ocr_server.py &
-```
+  ```python
+  ocr(lang="ch") 
+  ```
 
-### 2.2、配置开机自启
+- 匹配度
 
-你肯定不想每次机器重启之后都需要手动启动服务，因此我们需要配置开机自启。
+  similarity: float
 
-写开机自启服务文件：
+  默认为0.6，可以修改为从0到1的数；
 
-```
-sudo vim /lib/systemd/system/ocr.service
-```
+  ```shell
+  ocr(similarity=0.1)
+  ```
 
-`autoocr` 名称你可以自定义，写入以下内容：
+- 返回原始数据
 
-```
-[Unit]
-Description=OCR Service
-After=multi-user.target
+  return_default: bool
 
-[Service]
-User=uos
-Group=uos
-Type=idle
-WorkingDirectory=/home/uos/ocr_env
-ExecStart=pipenv run python ocr_server.py
+  默认为False，即默认返回识别到字符串的中心坐标，True表示返回原始数据；
 
-[Install]
-WantedBy=multi-user.target
-```
+  ```python
+  ocr(return_default=False)
+  ```
 
-> 注意替换你的${USER}
+- 只返回第一个
 
-修改配置文件的权限：
+  return_first: bool
 
-```
-sudo chmod 644 /lib/systemd/system/ocr.service
-```
+  当传入要查找的字符串时，可能存在当前屏幕中有多个目标；
 
-自启服务生效：
+  默认情况下是会将识别到的多个目标组装成字典返回；
 
-```
-sudo systemctl daemon-reload
-sudo systemctl enable ocr.service
-```
+  return_first=True 表示返回识别到的第一个。
 
-查看服务状态：
+  ```python
+  ocr(return_first=True )
+  ```
 
-```
-sudo systemctl status ocr.service
-```
-
-你可以再重启下电脑，看看服务是不是正常启动了，没报错就 OK 了。
-
-### 2.3、缓存
-
-在 `ocr_env/pic` 目录下保存了识别的一些缓存图片文件，您可能需要定期进行删除；
-
-当然，你可以使用定时任务对缓存文件进行清理，例如 `crontab`、`Jenkins` 任务等。
+  
