@@ -49,7 +49,7 @@ def paddle_ocr(pic_path, lang):
 
 
 if __name__ == "__main__":
-    server = ThreadXMLRPCServer((setting.IP, setting.PORT), allow_none=True)
+    server = ThreadXMLRPCServer(("0.0.0.0", setting.PORT), allow_none=True)
     server.register_function(image_put, "image_put")
     server.register_function(paddle_ocr, "paddle_ocr")
     print("监听客户端请求。。")

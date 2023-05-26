@@ -25,7 +25,7 @@ def _pdocr_client(lang, picture_abspath=None):
      通过 RPC 协议进行 OCR 识别。
     :return: 返回 PaddleOCR 的原始数据
     """
-    if picture_abspath is None:
+    if not picture_abspath:
         picture_abspath = setting.SCREEN_CACHE
         if setting.IS_X11:
             ImageGrab.grab().save(os.path.expanduser(picture_abspath))
@@ -35,7 +35,7 @@ def _pdocr_client(lang, picture_abspath=None):
                     .read()
                     .strip("\n")
             )
-    server = ServerProxy(f"http://{setting.IP}:{setting.PORT}", allow_none=True)
+    server = ServerProxy(f"http://{setting.SERVER_IP}:{setting.PORT}", allow_none=True)
     put_handle = open(os.path.expanduser(picture_abspath), "rb")
     try:
         # 将图片上传到服务端

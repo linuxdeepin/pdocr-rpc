@@ -1,6 +1,6 @@
 [project]
 name = "pdocr-rpc"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
   { name="mikigo", email="1964191531@qq.com" },
 ]

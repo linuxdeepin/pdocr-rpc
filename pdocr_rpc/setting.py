@@ -1,8 +1,6 @@
 import enum
 import os
-import platform
 import sys
-
 
 @enum.unique
 class DisplayServer(enum.Enum):
@@ -11,7 +9,7 @@ class DisplayServer(enum.Enum):
 
 @enum.unique
 class PlatForm(enum.Enum):
-    win = "win"
+    win = "win32"
     linux = "linux"
 
 
@@ -19,15 +17,17 @@ class PlatForm(enum.Enum):
 class _Setting:
     """配置模块"""
 
-    IP = "0.0.0.0"
+    SERVER_IP = "127.0.0.1"
     PORT = 8890
 
-    if sys.platform == "win32":
+    IS_LINUX = False
+    IS_WINDOWS = False
+    if sys.platform == PlatForm.win.value:
         # windows
         IS_WINDOWS = True
         # TODO
         ...
-    elif platform.system() == PlatForm.linux:
+    elif sys.platform == PlatForm.linux.value:
         # Linux
         IS_LINUX = True
         # 显示服务器
@@ -35,8 +35,8 @@ class _Setting:
             "cat ~/.xsession-errors | grep XDG_SESSION_TYPE | head -n 1"
         ).read().split("=")[-1].strip("\n")
 
-        IS_X11 = (DISPLAY_SERVER == DisplayServer.x11)
-        IS_WAYLAND = (DISPLAY_SERVER == DisplayServer.wayland)
+        IS_X11 = (DISPLAY_SERVER == DisplayServer.x11.value)
+        IS_WAYLAND = (DISPLAY_SERVER == DisplayServer.wayland.value)
         SCREEN_CACHE = "/tmp/screen.png"
 
 
