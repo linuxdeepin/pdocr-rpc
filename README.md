@@ -1,8 +1,10 @@
-# RPC-PaddleOCR
+# pdocr-rpc
 
-基于 PaddleOCR 部署的 RPC 服务。
+## PaddleOCR-RPC
 
-提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
+基于 PaddleOCR 封装的 RPC 服务，包含客户端和服务端。
+
+客户端提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
 ## 安装
 
