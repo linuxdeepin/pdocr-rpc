@@ -17,9 +17,24 @@ classifiers = [
 ]
 
 dependencies = [
-    "pyscreenshot",
+    "pyscreenshot;sys_platform == 'linux'",
+    "pillow;sys_platform == 'win32'",
 ]
+
+
 dynamic = ["version"]
+
+[project.optional-dependencies]
+server = [
+    "paddlepaddle",
+    "paddleocr>=2.0.1"
+]
+
+test = [
+    "pytest",
+]
+
+doc = ["mkdocs-material"]
 
 [tool.hatch.version]
 path = "pdocr_rpc/__version__.py"
@@ -31,5 +46,5 @@ include = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/funny-test/pdocr-rpc"
-"Bug Tracker" = "https://github.com/funny-test/pdocr-rpc/issues"
+Source = "https://github.com/funny-test/pdocr-rpc"
+Documentation = "https://funny-test.github.io/pdocr-rpc"

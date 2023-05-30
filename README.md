@@ -6,37 +6,16 @@
 
 Documents：https://funny-test.github.io/pdocr-rpc
 
-## 1、安装
+## 1、客户端安装
 
 ```shell
 pip install pdocr-rpc
 ```
 
-另外还需要手动安装以下依赖：
+### 1.2、服务端安装
 
-### 1.1、客户端依赖
-
-客户端仅需要安装**截图工具**；
-
-- `Windows` 上安装截图工具：
-
-  ```shell
-  pip3 install pillow
-  ```
-
-- `Linux` 上安装截图工具：
-
-```console
-pip3 install pyscreenshot
-```
-
-### 1.2、服务端依赖
-
-安装 `PaddleOCR` 环境：
-
-```console
-pip3 install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-pip3 install "paddleocr>=2.0.1" -i https://mirror.baidu.com/pypi/simple
+```shell
+pip install pdocr-rpc[server]
 ```
 
 ## 2、使用方法
@@ -55,7 +34,7 @@ if __name__ == '__main__':
     ocr_server()
 ```
 
-如果你想修改端口：
+默认端口号为 `8890` 如果你想修改端口：
 
 ```python
 from pdocr_rpc.ocr_server import ocr_server
@@ -72,9 +51,14 @@ if __name__ == '__main__':
 #### 2.1、识别当前屏幕的所有文字内容
 
 ```python
-from pdocr_rpc.ocr import ocr
+from pdocr_rpc.ocr import OCR
+from pdocr_rpc.setting import setting
 
-ocr()
+# 注意IP和端口要和你的服务端IP对应
+setting.SERVER_IP = "192.168.0.1"
+setting.PORT = 8888
+
+OCR.ocr()
 ```
 
 自动识别当前整个屏幕的所有内容。
@@ -82,7 +66,7 @@ ocr()
 #### 2.2、指定某张图片识别的所有文字内容
 
 ```python
-ocr(picture_abspath="~/Desktop/test.png")
+OCR.ocr(picture_abspath="~/Desktop/test.png")
 ```
 
 返回识别图片 `test.png` 的内容。 
@@ -90,7 +74,7 @@ ocr(picture_abspath="~/Desktop/test.png")
 #### 2.3、在全屏指定查找某个字符串的坐标
 
 ```python
-ocr("天天向上")
+OCR.ocr("天天向上")
 ```
 
 返回当前屏幕中，“天天向上”的坐标，如果存在多个，则返回一个字典。
@@ -98,7 +82,7 @@ ocr("天天向上")
 #### 2.4、指定某张图片查找某个字符串的坐标
 
 ```python
-ocr("天天向上"，picture_abspath="~/Desktop/test.png")
+OCR.ocr("天天向上"，picture_abspath="~/Desktop/test.png")
 ```
 
 #### 2.5、其他参数
@@ -110,7 +94,7 @@ ocr("天天向上"，picture_abspath="~/Desktop/test.png")
   默认为ch，中文，如果要修改识别语言；
 
   ```python
-  ocr(lang="ch") 
+  OCR.ocr(lang="ch") 
   ```
 
 - 匹配度
@@ -120,7 +104,7 @@ ocr("天天向上"，picture_abspath="~/Desktop/test.png")
   默认为0.6，可以修改为从0到1的数；
 
   ```shell
-  ocr(similarity=0.1)
+  OCR.ocr(similarity=0.1)
   ```
 
 - 返回原始数据
@@ -130,7 +114,7 @@ ocr("天天向上"，picture_abspath="~/Desktop/test.png")
   默认为False，即默认返回识别到字符串的中心坐标，True表示返回原始数据；
 
   ```python
-  ocr(return_default=False)
+  OCR.ocr(return_default=False)
   ```
 
 - 只返回第一个
@@ -144,7 +128,7 @@ ocr("天天向上"，picture_abspath="~/Desktop/test.png")
   return_first=True 表示返回识别到的第一个。
 
   ```python
-  ocr(return_first=True )
+  OCR.ocr(return_first=True )
   ```
 
   
