@@ -26,7 +26,7 @@ pip install pdocr-rpc
 
 - `Linux` 上安装截图工具：
 
-```shell
+```console
 pip3 install pyscreenshot
 ```
 
@@ -34,7 +34,7 @@ pip3 install pyscreenshot
 
 安装 `PaddleOCR` 环境：
 
-```shell
+```console
 pip3 install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 pip3 install "paddleocr>=2.0.1" -i https://mirror.baidu.com/pypi/simple
 ```
