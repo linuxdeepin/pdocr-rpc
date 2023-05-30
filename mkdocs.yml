@@ -1,0 +1,55 @@
+site_name: pdocr-rpc
+copyright: Copyright © 2022-2023 Funny-Test. All Rights Reserved.
+theme:
+  name: material
+  language: zh
+#  # 评论系统
+#  custom_dir: overrides
+  palette:
+  # 自动亮/暗模式
+  - media: '(prefers-color-scheme: light)'
+    # 配色方案
+    scheme: default
+    # 原色
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb
+      name: Switch to light mode
+  - media: '(prefers-color-scheme: dark)'
+    scheme: slate
+    primary: teal
+    accent: amber
+    toggle:
+      icon: material/lightbulb-outline
+      name: Switch to dark mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
+
+#  logo: "img/logo.png"
+#  favicon: img/favicon.ico
+  icon:
+    repo: fontawesome/brands/github
+
+# 右上角
+repo_name: funny-test/pdocr-rpc
+repo_url: "https://github.com/funny-test/pdocr-rpc"
+
+plugins:
+#  - termynal
+  - search
+#  - meta
+#  - markdownextradata:
+#      data: data
+
+nav:
+  - 首页: index.md
+  - 配置开机自启服务器: server_autostart.md
+
+extra:
+  analytics:
+    provider: google
+#    property: G-YNEVN69SC3
+  generator: false

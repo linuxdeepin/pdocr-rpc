@@ -4,8 +4,6 @@
 
 客户端提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
-Document：https://funny-test.github.io/pdocr-rpc
-
 ## 1、安装
 
 ```shell
@@ -27,8 +25,9 @@ pip install pdocr-rpc
 - `Linux` 上安装截图工具：
 
   ```shell
-pip3 install pyscreenshot
+  pip3 install pyscreenshot
   ```
+
 
 ### 1.2、服务端依赖
 
