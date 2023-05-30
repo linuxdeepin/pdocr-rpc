@@ -9,6 +9,8 @@ cd ocr_env
 nohup pipenv run python ocr_server.py &
 ```
 
+这里建议使用 pipenv 管理 Python 环境；
+
 ### 配置开机自启
 
 你肯定不想每次机器重启之后都需要手动启动服务，因此我们需要配置开机自启。
