@@ -287,22 +287,15 @@
       
         <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
-    1、安装
+    1、客户端安装
   </a>
   
-    <nav class="md-nav" aria-label="1、安装">
+    <nav class="md-nav" aria-label="1、客户端安装">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    1.1、客户端依赖
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#12" class="md-nav__link">
-    1.2、服务端依赖
+    1.2、服务端安装
   </a>
   
 </li>
@@ -431,22 +424,15 @@
       
         <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
-    1、安装
+    1、客户端安装
   </a>
   
-    <nav class="md-nav" aria-label="1、安装">
+    <nav class="md-nav" aria-label="1、客户端安装">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#11" class="md-nav__link">
-    1.1、客户端依赖
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#12" class="md-nav__link">
-    1.2、服务端依赖
+    1.2、服务端安装
   </a>
   
 </li>
@@ -545,26 +531,16 @@
 <h1 id="pdocr-rpc">pdocr-rpc</h1>
 <p>基于 <code>PaddleOCR</code> 封装的 <code>RPC</code> 服务，包含客户端和服务端。</p>
 <p>客户端提供了一个简单易用的函数 <code>ocr</code>，通过不同的参数控制返回不同的值。</p>
-<h2 id="1">1、安装</h2>
+<p>Documents：https://funny-test.github.io/pdocr-rpc</p>
+<h2 id="1">1、客户端安装</h2>
 <pre><code class="language-shell">pip install pdocr-rpc
 </code></pre>
-<p>另外还需要手动安装以下依赖：</p>
-<h3 id="11">1.1、客户端依赖</h3>
-<p>客户端仅需要安装<strong>截图工具</strong>；</p>
-<ul>
-<li><code>Windows</code> 上安装截图工具：</li>
-</ul>
-<p><code>shell
-  pip3 install pillow</code></p>
-<ul>
-<li><code>Linux</code> 上安装截图工具：</li>
-</ul>
-<p><code>shell
-  pip3 install pyscreenshot</code></p>
-<h3 id="12">1.2、服务端依赖</h3>
-<p>安装 <code>PaddleOCR</code> 环境：</p>
-<pre><code class="language-shell">pip3 install paddlepaddle -i https://mirror.baidu.com/pypi/simple
-pip3 install &quot;paddleocr&gt;=2.0.1&quot; -i https://mirror.baidu.com/pypi/simple
+<h3 id="12">1.2、服务端安装</h3>
+<pre><code class="language-shell">pip install pdocr-rpc[server]
+</code></pre>
+<p>服务端安装会安装较多依赖，所以安装时间稍长，取喝杯茶一会儿过来看看吧～～</p>
+<p>如果觉得安装速度实在太慢了，可以尝试使用 <code>paddle</code> 官方国内的 Python 镜像：</p>
+<pre><code class="language-shell">pip install pdocr-rpc[server] -i https://mirror.baidu.com/pypi/simple
 </code></pre>
 <h2 id="2">2、使用方法</h2>
 <h3 id="21">2.1、服务端</h3>
@@ -576,7 +552,7 @@ from pdocr_rpc.ocr_server import ocr_server
 if __name__ == '__main__':
     ocr_server()
 </code></pre>
-<p>如果你想修改端口：</p>
+<p>默认端口号为 <code>8890</code> 如果你想修改端口：</p>
 <pre><code class="language-python">from pdocr_rpc.ocr_server import ocr_server
 from pdocr_rpc.setting import setting
 
@@ -587,21 +563,26 @@ if __name__ == '__main__':
 </code></pre>
 <h3 id="22">2.2、客户端</h3>
 <h4 id="21_1">2.1、识别当前屏幕的所有文字内容</h4>
-<pre><code class="language-python">from pdocr_rpc.ocr import ocr
+<pre><code class="language-python">from pdocr_rpc.ocr import OCR
+from pdocr_rpc.setting import setting
 
-ocr()
+# 注意IP和端口要和你的服务端IP对应
+setting.SERVER_IP = &quot;192.168.0.1&quot;
+setting.PORT = 8888
+
+OCR.ocr()
 </code></pre>
 <p>自动识别当前整个屏幕的所有内容。</p>
 <h4 id="22_1">2.2、指定某张图片识别的所有文字内容</h4>
-<pre><code class="language-python">ocr(picture_abspath=&quot;~/Desktop/test.png&quot;)
+<pre><code class="language-python">OCR.ocr(picture_abspath=&quot;~/Desktop/test.png&quot;)
 </code></pre>
 <p>返回识别图片 <code>test.png</code> 的内容。 </p>
 <h4 id="23">2.3、在全屏指定查找某个字符串的坐标</h4>
-<pre><code class="language-python">ocr(&quot;天天向上&quot;)
+<pre><code class="language-python">OCR.ocr(&quot;天天向上&quot;)
 </code></pre>
 <p>返回当前屏幕中，“天天向上”的坐标，如果存在多个，则返回一个字典。</p>
 <h4 id="24">2.4、指定某张图片查找某个字符串的坐标</h4>
-<pre><code class="language-python">ocr(&quot;天天向上&quot;，picture_abspath=&quot;~/Desktop/test.png&quot;)
+<pre><code class="language-python">OCR.ocr(&quot;天天向上&quot;，picture_abspath=&quot;~/Desktop/test.png&quot;)
 </code></pre>
 <h4 id="25">2.5、其他参数</h4>
 <ul>
@@ -610,21 +591,21 @@ ocr()
 <p>lang： <code>ch</code>, <code>en</code>, <code>fr</code>, <code>german</code>, <code>korean</code>, <code>japan</code></p>
 <p>默认为ch，中文，如果要修改识别语言；</p>
 <p><code>python
-  ocr(lang="ch")</code></p>
+  OCR.ocr(lang="ch")</code></p>
 <ul>
 <li>匹配度</li>
 </ul>
 <p>similarity: float</p>
 <p>默认为0.6，可以修改为从0到1的数；</p>
 <p><code>shell
-  ocr(similarity=0.1)</code></p>
+  OCR.ocr(similarity=0.1)</code></p>
 <ul>
 <li>返回原始数据</li>
 </ul>
 <p>return_default: bool</p>
 <p>默认为False，即默认返回识别到字符串的中心坐标，True表示返回原始数据；</p>
 <p><code>python
-  ocr(return_default=False)</code></p>
+  OCR.ocr(return_default=False)</code></p>
 <ul>
 <li>只返回第一个</li>
 </ul>
@@ -633,7 +614,7 @@ ocr()
 <p>默认情况下是会将识别到的多个目标组装成字典返回；</p>
 <p>return_first=True 表示返回识别到的第一个。</p>
 <p><code>python
-  ocr(return_first=True )</code></p>
+  OCR.ocr(return_first=True )</code></p>
 
 
   
