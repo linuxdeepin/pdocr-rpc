@@ -20,7 +20,7 @@ elif setting.IS_WINDOWS:
     from PIL import ImageGrab
 
 
-def _pdocr_client(lang, picture_abspath=None):
+def _pdocr_client(lang, picture_abspath=None, retry: int = 2):
     """
      通过 RPC 协议进行 OCR 识别。
     :return: 返回 PaddleOCR 的原始数据
@@ -32,22 +32,32 @@ def _pdocr_client(lang, picture_abspath=None):
         else:
             picture_abspath = (
                 popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
-                    .read()
-                    .strip("\n")
+                .read()
+                .strip("\n")
             )
     server = ServerProxy(f"http://{setting.SERVER_IP}:{setting.PORT}", allow_none=True)
     put_handle = open(os.path.expanduser(picture_abspath), "rb")
-    try:
-        # 将图片上传到服务端
-        pic_dir = server.image_put(Binary(put_handle.read()))
-        put_handle.close()
-        # 返回识别结果
-        return server.paddle_ocr(pic_dir, lang)
-    except OSError:
+    for _ in range(retry):
+        try:
+            # 将图片上传到服务端
+            pic_dir = server.image_put(Binary(put_handle.read()))
+            put_handle.close()
+            # 返回识别结果
+            return server.paddle_ocr(pic_dir, lang)
+        except OSError:
+            pass
         raise EnvironmentError(f"RPC服务器链接失败. http://{setting.SERVER_IP}:{setting.PORT}")
 
 
-def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=False, return_first=False, lang="ch"):
+def ocr(
+    *target_strings,
+    picture_abspath=None,
+    similarity=0.6,
+    return_default=False,
+    return_first=False,
+    lang="ch",
+    retry: int = 2,
+):
     """
      通过 OCR 进行识别。
     :param target_strings:
@@ -60,7 +70,7 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
     :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
     :return: 返回的坐标是目标字符串所在行的中心坐标。
     """
-    results = _pdocr_client(picture_abspath=picture_abspath, lang=lang)
+    results = _pdocr_client(picture_abspath=picture_abspath, lang=lang, retry=retry)
     if return_default:
         return results
     more_map = {}
@@ -93,9 +103,7 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
             print(f"OCR识别到字符“{target_strings[0]}”—>{center_x, center_y}")
             return center_x, center_y
         if len(more_map) > 1:
-            print(
-                f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
-            )
+            print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
             return more_map
 
     elif len(target_strings) == 0:
@@ -115,9 +123,7 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
                 more_map[strings] = (center_x, center_y)
 
         if more_map:
-            print(
-                f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
-            )
+            print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
             return more_map
 
     else:
@@ -148,14 +154,12 @@ def ocr(*target_strings, picture_abspath=None, similarity=0.6, return_default=Fa
                     n += 1
 
         if more_map:
-            print(
-                f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}"
-            )
+            print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
             return more_map
 
     print(f"未识别到字符{f'“{target_strings}”' or ''}")
     return False
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     print(ocr())

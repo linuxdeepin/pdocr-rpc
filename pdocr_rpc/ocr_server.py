@@ -29,7 +29,7 @@ def image_put(data):
     if not exists(pic_dir):
         makedirs(pic_dir)
 
-    pic_path = join(pic_dir, f'pic_{time()}.png')
+    pic_path = join(pic_dir, f"pic_{time()}.png")
     handle = open(pic_path, "wb")
     handle.write(data.data)
     handle.close()
