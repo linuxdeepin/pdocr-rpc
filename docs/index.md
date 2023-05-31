@@ -4,6 +4,12 @@
 
 客户端提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
+**为什么要分成服务端和客户端？**
+
+因为 `PaddleOCR` 安装**太重**了，如果你的使用场景是需要经常安装，那绝对是一个痛苦的事情，你要是指导它每次安装要装多少东西你肯定会忍不住摇头；
+
+而在服务端一次性安装部署之后，客户端就可以零成本的使用，非常的方便。
+
 ---
 
 **Documentation**: <a href="https://funny-test.github.io/pdocr-rpc" target="_blank">https://funny-test.github.io/pdocr-rpc</a>
@@ -18,6 +24,7 @@
 
 ```console
 pip install pdocr-rpc[server]
+---> 100%
 ```
 
 ### 服务端启动服务
@@ -49,6 +56,7 @@ server()
 
 ```console
 pip install pdocr-rpc
+---> 100%
 ```
 
 ### 客户端使用

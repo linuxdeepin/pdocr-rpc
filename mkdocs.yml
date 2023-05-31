@@ -38,7 +38,7 @@ repo_name: funny-test/pdocr-rpc
 repo_url: "https://github.com/funny-test/pdocr-rpc"
 
 plugins:
-#  - termynal
+  - termynal
   - search
 #  - meta
 #  - markdownextradata:
