@@ -40,6 +40,8 @@
       
     
     
+      <link rel="stylesheet" href="termynal.css">
+    
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
@@ -287,15 +289,22 @@
       
         <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
-    1、客户端安装
+    1、服务端
   </a>
   
-    <nav class="md-nav" aria-label="1、客户端安装">
+    <nav class="md-nav" aria-label="1、服务端">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#12" class="md-nav__link">
-    1.2、服务端安装
+  <a href="#_1" class="md-nav__link">
+    服务端安装
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    服务端启动服务
   </a>
   
 </li>
@@ -307,36 +316,36 @@
       
         <li class="md-nav__item">
   <a href="#2" class="md-nav__link">
-    2、使用方法
+    2、客户端
   </a>
   
-    <nav class="md-nav" aria-label="2、使用方法">
+    <nav class="md-nav" aria-label="2、客户端">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
-    2.1、服务端
+  <a href="#_3" class="md-nav__link">
+    客户端安装
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22" class="md-nav__link">
-    2.2、客户端
+  <a href="#_4" class="md-nav__link">
+    客户端使用
   </a>
   
-    <nav class="md-nav" aria-label="2.2、客户端">
+    <nav class="md-nav" aria-label="客户端使用">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21_1" class="md-nav__link">
+  <a href="#21" class="md-nav__link">
     2.1、识别当前屏幕的所有文字内容
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22_1" class="md-nav__link">
+  <a href="#22" class="md-nav__link">
     2.2、指定某张图片识别的所有文字内容
   </a>
   
@@ -424,15 +433,22 @@
       
         <li class="md-nav__item">
   <a href="#1" class="md-nav__link">
-    1、客户端安装
+    1、服务端
   </a>
   
-    <nav class="md-nav" aria-label="1、客户端安装">
+    <nav class="md-nav" aria-label="1、服务端">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#12" class="md-nav__link">
-    1.2、服务端安装
+  <a href="#_1" class="md-nav__link">
+    服务端安装
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    服务端启动服务
   </a>
   
 </li>
@@ -444,36 +460,36 @@
       
         <li class="md-nav__item">
   <a href="#2" class="md-nav__link">
-    2、使用方法
+    2、客户端
   </a>
   
-    <nav class="md-nav" aria-label="2、使用方法">
+    <nav class="md-nav" aria-label="2、客户端">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21" class="md-nav__link">
-    2.1、服务端
+  <a href="#_3" class="md-nav__link">
+    客户端安装
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22" class="md-nav__link">
-    2.2、客户端
+  <a href="#_4" class="md-nav__link">
+    客户端使用
   </a>
   
-    <nav class="md-nav" aria-label="2.2、客户端">
+    <nav class="md-nav" aria-label="客户端使用">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#21_1" class="md-nav__link">
+  <a href="#21" class="md-nav__link">
     2.1、识别当前屏幕的所有文字内容
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#22_1" class="md-nav__link">
+  <a href="#22" class="md-nav__link">
     2.2、指定某张图片识别的所有文字内容
   </a>
   
@@ -531,40 +547,48 @@
 <h1 id="pdocr-rpc">pdocr-rpc</h1>
 <p>基于 <code>PaddleOCR</code> 封装的 <code>RPC</code> 服务，包含客户端和服务端。</p>
 <p>客户端提供了一个简单易用的函数 <code>ocr</code>，通过不同的参数控制返回不同的值。</p>
-<p>Documents：https://funny-test.github.io/pdocr-rpc</p>
-<h2 id="1">1、客户端安装</h2>
-<pre><code class="language-shell">pip install pdocr-rpc
-</code></pre>
-<h3 id="12">1.2、服务端安装</h3>
-<pre><code class="language-shell">pip install pdocr-rpc[server]
-</code></pre>
-<p>服务端安装会安装较多依赖，所以安装时间稍长，取喝杯茶一会儿过来看看吧～～</p>
-<p>如果觉得安装速度实在太慢了，可以尝试使用 <code>paddle</code> 官方国内的 Python 镜像：</p>
-<pre><code class="language-shell">pip install pdocr-rpc[server] -i https://mirror.baidu.com/pypi/simple
-</code></pre>
-<h2 id="2">2、使用方法</h2>
-<h3 id="21">2.1、服务端</h3>
-<p>随意新建一个<code>py</code>文件，比如：<code>ocr_server.py</code>；</p>
+<p><strong>为什么要分成服务端和客户端？</strong></p>
+<p>因为 <code>PaddleOCR</code> 安装<strong>太重</strong>了，如果你的使用场景是需要经常安装，那绝对是一个痛苦的事情，你要是指导它每次安装要装多少东西你肯定会忍不住摇头；</p>
+<p>而在服务端一次性安装部署之后，客户端就可以零成本的使用，非常的方便。</p>
+<hr />
+<p><strong>Documentation</strong>: <a href="https://funny-test.github.io/pdocr-rpc" target="_blank">https://funny-test.github.io/pdocr-rpc</a></p>
+<p><strong>Source Code</strong>: <a href="https://github.com/funny-test/pdocr-rpc" target="_blank">https://github.com/funny-test/pdocr-rpc</a></p>
+<hr />
+<h2 id="1">1、服务端</h2>
+<h3 id="_1">服务端安装</h3>
+<p>
+<div class="termy" data-termynal>
+<span data-ty>pip install pdocr-rpc[server]</span>
+<span data-ty="progress"></span>
+<span data-ty></span>
+</div></p>
+<h3 id="_2">服务端启动服务</h3>
+<p>随意新建一个<code>py</code>文件，名称你可以自定义，比如：<code>ocr_server.py</code>；</p>
 <p>写入以下内容：</p>
 <pre><code class="language-python"># ocr_server.py
-from pdocr_rpc.ocr_server import ocr_server
+from pdocr_rpc.server import server
 
-if __name__ == '__main__':
-    ocr_server()
+server()
 </code></pre>
 <p>默认端口号为 <code>8890</code> 如果你想修改端口：</p>
-<pre><code class="language-python">from pdocr_rpc.ocr_server import ocr_server
-from pdocr_rpc.setting import setting
+<pre><code class="language-python">from pdocr_rpc.server import server
+from pdocr_rpc.conf import setting
 
 setting.PORT = 8888
-
-if __name__ == '__main__':
-    ocr_server()
+server()
 </code></pre>
-<h3 id="22">2.2、客户端</h3>
-<h4 id="21_1">2.1、识别当前屏幕的所有文字内容</h4>
-<pre><code class="language-python">from pdocr_rpc.ocr import OCR
-from pdocr_rpc.setting import setting
+<h2 id="2">2、客户端</h2>
+<h3 id="_3">客户端安装</h3>
+<p>
+<div class="termy" data-termynal>
+<span data-ty>pip install pdocr-rpc</span>
+<span data-ty="progress"></span>
+<span data-ty></span>
+</div></p>
+<h3 id="_4">客户端使用</h3>
+<h4 id="21">2.1、识别当前屏幕的所有文字内容</h4>
+<pre><code class="language-python">from pdocr_rpc import OCR
+from pdocr_rpc.conf import setting
 
 # 注意IP和端口要和你的服务端IP对应
 setting.SERVER_IP = &quot;192.168.0.1&quot;
@@ -573,7 +597,7 @@ setting.PORT = 8888
 OCR.ocr()
 </code></pre>
 <p>自动识别当前整个屏幕的所有内容。</p>
-<h4 id="22_1">2.2、指定某张图片识别的所有文字内容</h4>
+<h4 id="22">2.2、指定某张图片识别的所有文字内容</h4>
 <pre><code class="language-python">OCR.ocr(picture_abspath=&quot;~/Desktop/test.png&quot;)
 </code></pre>
 <p>返回识别图片 <code>test.png</code> 的内容。 </p>
@@ -659,6 +683,8 @@ OCR.ocr()
     
     
       <script src="assets/javascripts/bundle.b4d07000.min.js"></script>
+      
+        <script src="termynal.js"></script>
       
     
   </body>
