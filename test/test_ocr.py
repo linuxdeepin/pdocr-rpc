@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import pytest
 
-from pdocr_rpc.ocr import OCR
+from pdocr_rpc import OCR
 
-from pdocr_rpc.setting import setting
+from pdocr_rpc.conf import setting
 
 setting.SERVER_IP = "10.8.13.78"
 setting.PORT = "8890"

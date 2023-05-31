@@ -4,63 +4,60 @@
 
 客户端提供了一个简单易用的函数 `ocr`，通过不同的参数控制返回不同的值。
 
-Documents：https://funny-test.github.io/pdocr-rpc
+---
 
-## 1、客户端安装
+**Documentation**: <a href="https://funny-test.github.io/pdocr-rpc" target="_blank">https://funny-test.github.io/pdocr-rpc</a>
 
-```shell
-pip install pdocr-rpc
-```
+**Source Code**: <a href="https://github.com/funny-test/pdocr-rpc" target="_blank">https://github.com/funny-test/pdocr-rpc</a>
 
-### 1.2、服务端安装
+---
 
-```shell
+## 1、服务端
+
+### 服务端安装
+
+```console
 pip install pdocr-rpc[server]
 ```
 
-服务端安装会安装较多依赖，所以安装时间稍长，取喝杯茶一会儿过来看看吧～～
+### 服务端启动服务
 
-如果觉得安装速度实在太慢了，可以尝试使用 `paddle` 官方国内的 Python 镜像：
-
-```shell
-pip install pdocr-rpc[server] -i https://mirror.baidu.com/pypi/simple
-```
-
-## 2、使用方法
-
-### 2.1、服务端
-
-随意新建一个`py`文件，比如：`ocr_server.py`；
+随意新建一个`py`文件，名称你可以自定义，比如：`ocr_server.py`；
 
 写入以下内容：
 
 ```python
 # ocr_server.py
-from pdocr_rpc.ocr_server import ocr_server
+from pdocr_rpc.server import server
 
-if __name__ == '__main__':
-    ocr_server()
+server()
 ```
 
 默认端口号为 `8890` 如果你想修改端口：
 
 ```python
-from pdocr_rpc.ocr_server import ocr_server
-from pdocr_rpc.setting import setting
+from pdocr_rpc.server import server
+from pdocr_rpc.conf import setting
 
 setting.PORT = 8888
-
-if __name__ == '__main__':
-    ocr_server()
+server()
 ```
 
-### 2.2、客户端
+## 2、客户端
+
+### 客户端安装
+
+```console
+pip install pdocr-rpc
+```
+
+### 客户端使用
 
 #### 2.1、识别当前屏幕的所有文字内容
 
 ```python
-from pdocr_rpc.ocr import OCR
-from pdocr_rpc.setting import setting
+from pdocr_rpc import OCR
+from pdocr_rpc.conf import setting
 
 # 注意IP和端口要和你的服务端IP对应
 setting.SERVER_IP = "192.168.0.1"

@@ -11,7 +11,7 @@ from time import time
 from typing import TYPE_CHECKING
 from xmlrpc.server import SimpleXMLRPCServer
 
-from pdocr_rpc.setting import setting
+from pdocr_rpc.conf import setting
 
 if not TYPE_CHECKING:
     from paddleocr import PaddleOCR
@@ -49,10 +49,15 @@ def paddle_ocr(pic_path, lang):
     return result
 
 
-if __name__ == "__main__":
+def server():
+    """server"""
     server = ThreadXMLRPCServer(("0.0.0.0", setting.PORT), allow_none=True)
     server.register_function(image_put, "image_put")
     server.register_function(paddle_ocr, "paddle_ocr")
     print("Listen to client requests ...")
     print(f"Client request: IP:{setting.PORT}")
     server.serve_forever()
+
+
+if __name__ == "__main__":
+    server()
