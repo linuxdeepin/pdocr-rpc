@@ -1,5 +1,5 @@
 site_name: pdocr-rpc
-copyright: Copyright © 2022-2023 Funny-Test. All Rights Reserved.
+copyright: Copyright © 2022-2023 funny-dream. All Rights Reserved.
 theme:
   name: material
   language: zh
@@ -34,8 +34,8 @@ theme:
     repo: fontawesome/brands/github
 
 # 右上角
-repo_name: funny-test/pdocr-rpc
-repo_url: "https://github.com/funny-test/pdocr-rpc"
+repo_name: funny-dream/pdocr-rpc
+repo_url: "https://github.com/funny-dream/pdocr-rpc"
 
 plugins:
   - termynal
