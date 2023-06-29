@@ -6,13 +6,13 @@
 """
 import json
 import os
-from os import popen, environ
+from pprint import pprint
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
 
 from pdocr_rpc.conf import setting
 
-environ["DISPLAY"] = ":0"
+os.environ["DISPLAY"] = ":0"
 
 if setting.IS_LINUX:
     import pyscreenshot as ImageGrab
@@ -33,7 +33,7 @@ class OCR:
                 ImageGrab.grab().save(os.path.expanduser(picture_abspath))
             else:
                 picture_abspath = (
-                    popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
+                    os.popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
                     .read()
                     .strip("\n")
                 )
@@ -165,8 +165,9 @@ class OCR:
                 return more_map
 
         print(f"未识别到字符{f'“{target_strings}”' or ''}")
+        pprint(results)
         return False
 
 
 if __name__ == "__main__":
-    print(ocr())
+    print(OCR.ocr())
