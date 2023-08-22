@@ -7,6 +7,7 @@
 import json
 import os
 from pprint import pprint
+from time import sleep
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
 
@@ -55,7 +56,7 @@ class OCR:
             )
 
     @classmethod
-    def ocr(
+    def _ocr(
         cls,
         *target_strings,
         picture_abspath=None,
@@ -75,6 +76,7 @@ class OCR:
         :param return_default: 返回识别的原生数据。
         :param return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
         :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
+        :param retry: 连接服务器重试次数
         :return: 返回的坐标是目标字符串所在行的中心坐标。
         """
         results = cls._pdocr_client(picture_abspath=picture_abspath, lang=lang, retry=retry)
@@ -168,6 +170,50 @@ class OCR:
         pprint(results)
         return False
 
+    @classmethod
+    def ocr(
+            cls,
+            *target_strings,
+            picture_abspath=None,
+            similarity=0.6,
+            return_default=False,
+            return_first=False,
+            lang="ch",
+            retry: int = 2,
+            res_retry: int = 2,
+    ):
+        """
+        通过 OCR 进行识别。
+        :param target_strings:
+            目标字符,识别一个字符串或多个字符串,并返回其在图片中的坐标;
+            如果不传参，返回图片中识别到的所有字符串。
+        :param picture_abspath: 要识别的图片路径，如果不传默认截取全屏识别。
+        :param similarity: 匹配度。
+        :param return_default: 返回识别的原生数据。
+        :param return_first: 只返回第一个,默认为 False,返回识别到的所有数据。
+        :param lang: `ch`, `en`, `fr`, `german`, `korean`, `japan`
+        :param retry: 连接服务器重试次数
+        :param res_retry: 如果结果返回为 False，重试次数
+        :return: 返回的坐标是目标字符串所在行的中心坐标。
+        """
+        for _ in range(res_retry):
+            res = cls._ocr(
+                *target_strings,
+                picture_abspath=picture_abspath,
+                similarity=similarity,
+                return_default=return_default,
+                return_first=return_first,
+                lang=lang,
+                retry=retry,
+            )
+            if res is False:
+                sleep(1)
+                continue
+            return res
+        return False
+
 
 if __name__ == "__main__":
+    from pdocr_rpc.conf import setting
+    setting.SERVER_IP = "youqu-dev.uniontech.com"
     print(OCR.ocr())

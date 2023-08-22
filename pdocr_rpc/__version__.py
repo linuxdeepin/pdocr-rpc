@@ -1,3 +1,3 @@
 __title__ = "pdocr_rpc"
 
-__version__ = "2023.6.29"
+__version__ = "2023.8.22"
