@@ -6,7 +6,6 @@
 """
 import json
 import os
-from pprint import pprint
 from time import sleep
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
@@ -19,6 +18,8 @@ if setting.IS_LINUX:
     import pyscreenshot as ImageGrab
 elif setting.IS_WINDOWS:
     from PIL import ImageGrab
+    
+from funnylog import logger
 
 
 class OCR:
@@ -109,10 +110,10 @@ class OCR:
                         n += 1
             if len(more_map) == 1:
                 center_x, center_y = more_map.get(target_strings[0])
-                print(f"OCR识别到字符“{target_strings[0]}”—>{center_x, center_y}")
+                logger.debug(f"OCR识别到字符 [{target_strings[0]}]—>{center_x, center_y}")
                 return center_x, center_y
             if len(more_map) > 1:
-                print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
+                logger.debug(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
                 return more_map
 
         elif len(target_strings) == 0:
@@ -132,7 +133,7 @@ class OCR:
                     more_map[strings] = (center_x, center_y)
 
             if more_map:
-                print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
+                logger.debug(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
                 return more_map
 
         else:
@@ -163,11 +164,13 @@ class OCR:
                         n += 1
 
             if more_map:
-                print(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
+                logger.debug(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
                 return more_map
-
-        print(f"未识别到字符{f'“{target_strings}”' or ''}")
-        pprint(results)
+        res_log = []
+        for res in results:
+            [[*_], [strings, rate]] = res
+            res_log.append(strings)
+        logger.debug(f"未识别到字符{target_strings}, 识别到的原始内容：{res_log}")
         return False
 
     @classmethod
@@ -216,4 +219,4 @@ class OCR:
 if __name__ == "__main__":
     from pdocr_rpc.conf import setting
     setting.SERVER_IP = "youqu-dev.uniontech.com"
-    print(OCR.ocr())
+    OCR.ocr("uniontech","youqu")
