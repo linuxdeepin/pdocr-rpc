@@ -12,9 +12,9 @@
 
 ---
 
-**Documentation**: <a href="https://funny-dream.github.io/pdocr-rpc" target="_blank">https://funny-dream.github.io/pdocr-rpc</a>
+**Documentation**: <a href="https://linuxdeepin.github.io/pdocr-rpc" target="_blank">https://linuxdeepin.github.io/pdocr-rpc</a>
 
-**Source Code**: <a href="https://github.com/funny-dream/pdocr-rpc" target="_blank">https://github.com/funny-dream/pdocr-rpc</a>
+**Source Code**: <a href="https://github.com/linuxdeepin/pdocr-rpc" target="_blank">https://github.com/linuxdeepin/pdocr-rpc</a>
 
 ---
 

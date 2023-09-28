@@ -47,5 +47,5 @@ include = [
 ]
 
 [project.urls]
-Source = "https://github.com/funny-dream/pdocr-rpc"
-Documentation = "https://funny-dream.github.io/pdocr-rpc"
+Source = "https://github.com/linuxdeepin/pdocr-rpc"
+Documentation = "https://linuxdeepin.github.io/pdocr-rpc"

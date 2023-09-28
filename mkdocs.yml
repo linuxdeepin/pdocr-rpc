@@ -1,5 +1,5 @@
 site_name: pdocr-rpc
-copyright: Copyright © 2022-2023 funny-dream. All Rights Reserved.
+copyright: Copyright © 2022-2023 linuxdeepin. All Rights Reserved.
 theme:
   name: material
   language: zh
@@ -34,11 +34,10 @@ theme:
     repo: fontawesome/brands/github
 
 # 右上角
-repo_name: funny-dream/pdocr-rpc
-repo_url: "https://github.com/funny-dream/pdocr-rpc"
+repo_name: linuxdeepin/pdocr-rpc
+repo_url: "https://github.com/linuxdeepin/pdocr-rpc"
 
 plugins:
-  - termynal
   - search
 #  - meta
 #  - markdownextradata:
