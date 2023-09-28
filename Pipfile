@@ -1,0 +1,17 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[[source]]
+url = "https://mirror.baidu.com/pypi/simple"
+verify_ssl = true
+name = "mirrorbaidu"
+
+[packages]
+funnylog = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "2.7"
