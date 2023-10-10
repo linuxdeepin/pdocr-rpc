@@ -25,7 +25,7 @@ class _Setting:
     """配置模块"""
 
     SERVER_IP = "127.0.0.1"
-    PORT = 8890
+    PORT = 8891
 
     IS_LINUX = False
     IS_WINDOWS = False

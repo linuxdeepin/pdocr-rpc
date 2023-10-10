@@ -80,7 +80,7 @@ class OCR:
         :param retry: 连接服务器重试次数
         :return: 返回的坐标是目标字符串所在行的中心坐标。
         """
-        results = cls._pdocr_client(picture_abspath=picture_abspath, lang=lang, retry=retry)
+        results = cls._pdocr_client(picture_abspath=picture_abspath, lang=lang, retry=retry)[0]
         if return_default:
             return results
         more_map = {}
