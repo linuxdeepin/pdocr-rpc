@@ -26,6 +26,10 @@ class _Setting:
 
     SERVER_IP = "127.0.0.1"
     PORT = 8890
+    NETWORK_RETRY = 1
+    PAUSE = 1
+    TIMEOUT = 5
+    MAX_MATCH_NUMBER = 100
 
     IS_LINUX = False
     IS_WINDOWS = False

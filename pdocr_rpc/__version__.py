@@ -6,4 +6,4 @@
 # SPDX-License-Identifier: Apache Software License
 __title__ = "pdocr_rpc"
 
-__version__ = "2023.10.17"
+__version__ = "2023.11.17"
