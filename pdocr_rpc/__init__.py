@@ -207,11 +207,14 @@ class OCR:
         pause = pause if pause else setting.PAUSE
         timeout = timeout if timeout else setting.TIMEOUT
         max_match_number = max_match_number if max_match_number else setting.MAX_MATCH_NUMBER
+        ignore_time = 0
         start = time.time()
         for _ in range(max_match_number):
             end = time.time()
-            if end - start > timeout:
+            during = end - start - ignore_time
+            if during > timeout:
                 return False
+            _start = time.time()
             res = cls._ocr(
                 *target_strings,
                 picture_abspath=picture_abspath,
@@ -221,6 +224,8 @@ class OCR:
                 lang=lang,
                 network_retry=network_retry,
             )
+            _end = time.time()
+            ignore_time += (_end - _start)
             if res is False:
                 time.sleep(pause)
                 continue
@@ -232,4 +237,4 @@ if __name__ == "__main__":
     from pdocr_rpc.conf import setting
 
     setting.SERVER_IP = "youqu-dev.uniontech.com"
-    OCR.ocr("uniontech", "youqu")
+    OCR.ocr("uniontech")
