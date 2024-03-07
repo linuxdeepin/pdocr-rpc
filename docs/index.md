@@ -24,6 +24,7 @@
 
 ```console
 pip install pdocr-rpc[server]
+# 如果遇到报错: no matches found: pdocr-rpc[server], 尝试: pip install pdocr-rpc\[server\]
 ---> 100%
 ```
 
