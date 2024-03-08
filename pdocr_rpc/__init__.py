@@ -86,35 +86,36 @@ class OCR:
         more_map = {}
         if len(target_strings) == 1:
             n = 1
-            for res in results:
-                [
+            for result in results:
+                for res in result:
                     [
-                        [left_top_x, left_top_y],
-                        [right_top_x, right_top_y],
-                        [right_bottom_x, right_bottom_y],
-                        [left_bottom_x, left_bottom_y],
-                    ],
-                    (strings, rate),
-                ] = res
-                if target_strings[0] in strings:
-                    if rate >= similarity:
-                        center_x = (right_top_x + left_top_x) / 2
-                        center_y = (right_bottom_y + right_top_y) / 2
-                        more_map[
-                            target_strings[0]
-                            if not more_map.get(target_strings[0])
-                            else f"{target_strings[0]}_{n}"
-                        ] = (center_x, center_y)
-                        if return_first:
-                            break
-                        n += 1
-            if len(more_map) == 1:
-                center_x, center_y = more_map.get(target_strings[0])
-                logger.debug(f"OCR识别到字符 [{target_strings[0]}]—>{center_x, center_y}")
-                return center_x, center_y
-            if len(more_map) > 1:
-                logger.debug(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
-                return more_map
+                        [
+                            [left_top_x, left_top_y],
+                            [right_top_x, right_top_y],
+                            [right_bottom_x, right_bottom_y],
+                            [left_bottom_x, left_bottom_y],
+                        ],
+                        (strings, rate),
+                    ] = res
+                    if target_strings[0] in strings:
+                        if rate >= similarity:
+                            center_x = (right_top_x + left_top_x) / 2
+                            center_y = (right_bottom_y + right_top_y) / 2
+                            more_map[
+                                target_strings[0]
+                                if not more_map.get(target_strings[0])
+                                else f"{target_strings[0]}_{n}"
+                            ] = (center_x, center_y)
+                            if return_first:
+                                break
+                            n += 1
+                if len(more_map) == 1:
+                    center_x, center_y = more_map.get(target_strings[0])
+                    logger.debug(f"OCR识别到字符 [{target_strings[0]}]—>{center_x, center_y}")
+                    return center_x, center_y
+                if len(more_map) > 1:
+                    logger.debug(f"OCR识别结果:\n{json.dumps(more_map, ensure_ascii=False, indent=2)}")
+                    return more_map
 
         elif len(target_strings) == 0:
             for res in results:
