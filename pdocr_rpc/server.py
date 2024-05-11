@@ -44,7 +44,7 @@ def paddle_ocr(pic_path, lang):
     :param lang:
     :return:
     """
-    ocr = PaddleOCR(use_angle_cls=True, lang=lang)
+    ocr = PaddleOCR(use_angle_cls=True, lang=lang, ocr_version="PP-OCRv4")
     result = ocr.ocr(pic_path, cls=True)
     return result
 
