@@ -23,8 +23,19 @@ from funnylog import logger
 
 
 class OCR:
-    @staticmethod
-    def _pdocr_client(lang, picture_abspath=None, network_retry: int = 1):
+
+    server_url = f"http://{setting.SERVER_IP}:{setting.PORT}"
+    server = ServerProxy(server_url, allow_none=True)
+
+    @classmethod
+    def check_connected(cls):
+        try:
+            return cls.server.check_connected()
+        except OSError:
+            return False
+
+    @classmethod
+    def _pdocr_client(cls, lang, picture_abspath=None, network_retry: int = 1):
         """
          通过 RPC 协议进行 OCR 识别。
         :return: 返回 PaddleOCR 的原始数据
@@ -36,24 +47,22 @@ class OCR:
             else:
                 picture_abspath = (
                     os.popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
-                        .read()
-                        .strip("\n")
+                    .read()
+                    .strip("\n")
                 )
-        server = ServerProxy(
-            f"http://{setting.SERVER_IP}:{setting.PORT}", allow_none=True
-        )
+
         put_handle = open(os.path.expanduser(picture_abspath), "rb")
         for _ in range(network_retry + 1):
             try:
                 # 将图片上传到服务端
-                pic_dir = server.image_put(Binary(put_handle.read()))
+                pic_dir = cls.server.image_put(Binary(put_handle.read()))
                 put_handle.close()
                 # 返回识别结果
-                return server.paddle_ocr(pic_dir, lang)
+                return cls.server.paddle_ocr(pic_dir, lang)
             except OSError:
                 continue
         raise EnvironmentError(
-            f"RPC服务器链接失败. http://{setting.SERVER_IP}:{setting.PORT}"
+            f"RPC服务器链接失败: {cls.server_url}"
         )
 
     @classmethod
@@ -121,7 +130,7 @@ class OCR:
                 return more_map
 
         elif len(target_strings) == 0:
-            for res in results:
+            for res in results[0]:
                 [
                     [
                         [left_top_x, left_top_y],
@@ -144,7 +153,7 @@ class OCR:
             for target_string in target_strings:
                 n = 1
                 more_map[target_string] = False
-                for res in results:
+                for res in results[0]:
                     [
                         [
                             [left_top_x, left_top_y],
@@ -235,10 +244,3 @@ class OCR:
                 continue
             return res
         return False
-
-
-if __name__ == "__main__":
-    from pdocr_rpc.conf import setting
-
-    setting.SERVER_IP = "youqu-dev.uniontech.com"
-    OCR.ocr("uniontech")

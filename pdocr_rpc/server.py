@@ -24,6 +24,10 @@ class ThreadXMLRPCServer(ThreadingMixIn, SimpleXMLRPCServer):
 CURRENT_DIR = dirname(abspath(__file__))
 
 
+def check_connected():
+    return True
+
+
 def image_put(data):
     pic_dir = join(CURRENT_DIR, "pic")
     if not exists(pic_dir):
@@ -50,8 +54,8 @@ def paddle_ocr(pic_path, lang):
 
 
 def server():
-    """server"""
     server = ThreadXMLRPCServer(("0.0.0.0", setting.PORT), allow_none=True)
+    server.register_function(check_connected, "check_connected")
     server.register_function(image_put, "image_put")
     server.register_function(paddle_ocr, "paddle_ocr")
     print("Listen to client requests ...")
