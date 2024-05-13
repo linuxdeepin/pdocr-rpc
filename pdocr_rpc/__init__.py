@@ -21,7 +21,6 @@ elif setting.IS_WINDOWS:
 
 from funnylog import logger
 
-import time
 
 
 class OCR:
