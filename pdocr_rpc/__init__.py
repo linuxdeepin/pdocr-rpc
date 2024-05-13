@@ -60,16 +60,11 @@ class OCR:
         put_handle = open(os.path.expanduser(picture_abspath), "rb")
         for _ in range(network_retry + 1):
             try:
-                start = time.time()
                 # 将图片上传到服务端
                 pic_dir = cls.server().image_put(Binary(put_handle.read()))
-                put_time = time.time()
-                print("put file：", put_time - start, "s")
                 put_handle.close()
                 # 返回识别结果
                 pic_path =  cls.server().paddle_ocr(pic_dir, lang)
-                ocr_time = time.time()
-                print("ocr：", ocr_time - put_time, "s")
                 return pic_path
             except OSError:
                 continue
