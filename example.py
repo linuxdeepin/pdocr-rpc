@@ -11,5 +11,5 @@ setting.SERVER_IP = "10.10.15.210"
 setting.PORT = 8090
 # setting.SERVER_IP = "10.8.13.66"
 # setting.PORT = 8890
-# for i in range(20):
-OCR.ocr("mikigo")
+for i in range(20):
+    OCR.ocr("mikigo")

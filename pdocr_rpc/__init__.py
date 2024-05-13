@@ -21,16 +21,23 @@ elif setting.IS_WINDOWS:
 
 from funnylog import logger
 
+import time
+
 
 class OCR:
 
-    server_url = f"http://{setting.SERVER_IP}:{setting.PORT}"
-    server = ServerProxy(server_url, allow_none=True)
+    @classmethod
+    def server_url(cls):
+        return f"http://{setting.SERVER_IP}:{setting.PORT}"
+
+    @classmethod
+    def server(cls):
+        return ServerProxy(cls.server_url(), allow_none=True)
 
     @classmethod
     def check_connected(cls):
         try:
-            return cls.server.check_connected()
+            return cls.server().check_connected()
         except OSError:
             return False
 
@@ -54,11 +61,17 @@ class OCR:
         put_handle = open(os.path.expanduser(picture_abspath), "rb")
         for _ in range(network_retry + 1):
             try:
+                start = time.time()
                 # 将图片上传到服务端
-                pic_dir = cls.server.image_put(Binary(put_handle.read()))
+                pic_dir = cls.server().image_put(Binary(put_handle.read()))
+                put_time = time.time()
+                print("put file：", put_time - start, "s")
                 put_handle.close()
                 # 返回识别结果
-                return cls.server.paddle_ocr(pic_dir, lang)
+                pic_path =  cls.server().paddle_ocr(pic_dir, lang)
+                ocr_time = time.time()
+                print("ocr：", ocr_time - put_time, "s")
+                return pic_path
             except OSError:
                 continue
         raise EnvironmentError(
