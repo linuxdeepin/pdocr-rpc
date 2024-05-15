@@ -69,7 +69,7 @@ class OCR:
             except OSError:
                 continue
         raise EnvironmentError(
-            f"RPC服务器链接失败: {cls.server_url}"
+            f"RPC服务器链接失败: {cls.server_url()}"
         )
 
     @classmethod

@@ -54,7 +54,7 @@ class OCRUtils:
 
 
 if __name__ == '__main__':
-    for i in range(1):
+    for i in range(10):
         start = time.time()
         OCRUtils.ocr("所有")
         end = time.time()
