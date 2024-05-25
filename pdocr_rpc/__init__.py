@@ -14,7 +14,7 @@ from pdocr_rpc.conf import setting
 
 os.environ["DISPLAY"] = ":0"
 
-if setting.IS_LINUX:
+if setting.IS_LINUX or setting.IS_MACOS:
     import pyscreenshot as ImageGrab
 elif setting.IS_WINDOWS:
     from PIL import ImageGrab
@@ -50,12 +50,15 @@ class OCR:
             picture_abspath = setting.SCREEN_CACHE
             if setting.IS_X11:
                 ImageGrab.grab().save(os.path.expanduser(picture_abspath))
-            else:
+            elif setting.IS_WAYLAND:
                 picture_abspath = (
                     os.popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
                     .read()
                     .strip("\n")
                 )
+            else:
+                # for windows and macos
+                ImageGrab.grab().save(os.path.expanduser(picture_abspath))
 
         put_handle = open(os.path.expanduser(picture_abspath), "rb")
         for _ in range(network_retry + 1):
