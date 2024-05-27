@@ -44,17 +44,9 @@ class _Setting:
     if platform.system() == PlatForm.win.value:
         # windows
         IS_WINDOWS = True
-        IS_X11 = False
-        IS_WAYLAND = False
-        print("IS_X11======", IS_X11)
-        print("IS_WAYLAND======", IS_WAYLAND)
     elif platform.system() == PlatForm.macos.value:
         # MacOS
         IS_MACOS = True
-        IS_X11 = False
-        IS_WAYLAND = False
-        print("IS_X11======", IS_X11)
-        print("IS_WAYLAND======", IS_WAYLAND)
     elif platform.system() == PlatForm.linux.value:
         # Linux
         IS_LINUX = True
@@ -67,8 +59,6 @@ class _Setting:
         )
         IS_X11 = DISPLAY_SERVER == DisplayServer.x11.value
         IS_WAYLAND = DISPLAY_SERVER == DisplayServer.wayland.value
-        print("IS_X11======",IS_X11)
-        print("IS_WAYLAND======", IS_WAYLAND)
 
 
 setting = _Setting()
