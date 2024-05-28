@@ -10,6 +10,8 @@ import time
 from xmlrpc.client import Binary
 from xmlrpc.client import ServerProxy
 
+import easyprocess
+
 from pdocr_rpc.conf import setting
 
 os.environ["DISPLAY"] = ":0"
@@ -52,13 +54,17 @@ class OCR:
             picture_abspath = setting.SCREEN_CACHE
             if setting.IS_LINUX:
                 if setting.IS_X11:
-                    ImageGrab.grab().save(os.path.expanduser(picture_abspath))
+                    try:
+                        ImageGrab.grab().save(os.path.expanduser(picture_abspath))
+                    except easyprocess.EasyProcessError:
+                        ...
                 else:
                     # setting.IS_WAYLAND:
                     picture_abspath = (os.popen(cls.wayland_screen_dbus).read().strip("\n"))
             elif setting.IS_MACOS:
                 # for macos
                 ImageGrab.grab().save(os.path.expanduser(picture_abspath))
+
             else:
                 # for windows
                 ImageGrab.grab().save(os.path.expanduser(picture_abspath))
