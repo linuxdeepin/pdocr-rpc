@@ -6,7 +6,8 @@
 # SPDX-License-Identifier: Apache Software License
 import enum
 import os
-import sys
+import platform
+import tempfile
 
 
 @enum.unique
@@ -17,8 +18,11 @@ class DisplayServer(enum.Enum):
 
 @enum.unique
 class PlatForm(enum.Enum):
-    win = "win32"
-    linux = "linux"
+    # win = "win32"
+    # linux = "linux"
+    win = "Windows"
+    linux = "Linux"
+    macos = "Darwin"
 
 
 class _Setting:
@@ -33,12 +37,17 @@ class _Setting:
 
     IS_LINUX = False
     IS_WINDOWS = False
-    if sys.platform == PlatForm.win.value:
+    IS_MACOS = False
+
+    SCREEN_CACHE = os.path.join(tempfile.gettempdir(), 'screen.png')  # SCREEN_CACHE = "/tmp/screen.png"
+
+    if platform.system() == PlatForm.win.value:
         # windows
         IS_WINDOWS = True
-        # TODO
-        ...
-    elif sys.platform == PlatForm.linux.value:
+    elif platform.system() == PlatForm.macos.value:
+        # MacOS
+        IS_MACOS = True
+    elif platform.system() == PlatForm.linux.value:
         # Linux
         IS_LINUX = True
         # 显示服务器
@@ -48,10 +57,8 @@ class _Setting:
             .split("=")[-1]
             .strip("\n")
         )
-
         IS_X11 = DISPLAY_SERVER == DisplayServer.x11.value
         IS_WAYLAND = DISPLAY_SERVER == DisplayServer.wayland.value
-        SCREEN_CACHE = "/tmp/screen.png"
 
 
 setting = _Setting()

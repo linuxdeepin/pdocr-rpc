@@ -14,7 +14,7 @@ from pdocr_rpc.conf import setting
 
 os.environ["DISPLAY"] = ":0"
 
-if setting.IS_LINUX:
+if setting.IS_LINUX or setting.IS_MACOS:
     import pyscreenshot as ImageGrab
 elif setting.IS_WINDOWS:
     from PIL import ImageGrab
@@ -24,6 +24,8 @@ from funnylog import logger
 
 
 class OCR:
+
+    wayland_screen_dbus = "qdbus org.kde.KWin /Screenshot screenshotFullscreen"
 
     @classmethod
     def server_url(cls):
@@ -48,14 +50,18 @@ class OCR:
         """
         if not picture_abspath:
             picture_abspath = setting.SCREEN_CACHE
-            if setting.IS_X11:
+            if setting.IS_LINUX:
+                if setting.IS_X11:
+                    ImageGrab.grab().save(os.path.expanduser(picture_abspath))
+                else:
+                    # setting.IS_WAYLAND:
+                    picture_abspath = (os.popen(cls.wayland_screen_dbus).read().strip("\n"))
+            elif setting.IS_MACOS:
+                # for macos
                 ImageGrab.grab().save(os.path.expanduser(picture_abspath))
             else:
-                picture_abspath = (
-                    os.popen("qdbus org.kde.KWin /Screenshot screenshotFullscreen")
-                    .read()
-                    .strip("\n")
-                )
+                # for windows
+                ImageGrab.grab().save(os.path.expanduser(picture_abspath))
 
         put_handle = open(os.path.expanduser(picture_abspath), "rb")
         for _ in range(network_retry + 1):
